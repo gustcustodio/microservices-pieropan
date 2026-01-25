@@ -6,6 +6,8 @@ import com.gustcustodio.proposta.app.entities.Proposta;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface PropostaMapper {
 
@@ -26,5 +28,7 @@ public interface PropostaMapper {
     @Mapping(target = "cpf", source = "usuario.cpf")
     @Mapping(target = "renda", source = "usuario.renda")
     PropostaResponseDTO convertEntityToDto(Proposta proposta);
+
+    List<PropostaResponseDTO> convertListEntityToListDto(Iterable<Proposta> propostas);
 
 }
