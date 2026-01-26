@@ -13,7 +13,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(value = "/propostas")
+@RequestMapping(value = "/proposta")
 public class PropostaController {
 
     private final PropostaService propostaService;
@@ -26,8 +26,8 @@ public class PropostaController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PropostaResponseDTO>> obterPropostas() {
-        return ResponseEntity.ok(propostaService.obterPropostas());
+    public ResponseEntity<List<PropostaResponseDTO>> obterProposta() {
+        return ResponseEntity.ok(propostaService.obterProposta());
     }
 
 }
