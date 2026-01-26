@@ -26,7 +26,7 @@ public class PropostaService {
     }
 
     @Transactional
-    public List<PropostaResponseDTO> obterPropostas() {
+    public List<PropostaResponseDTO> obterProposta() {
         return propostaMapper.convertListEntityToListDto(propostaRepository.findAll());
     }
 
