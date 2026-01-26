@@ -6,6 +6,7 @@ import com.gustcustodio.proposta.app.entities.Proposta;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.text.NumberFormat;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
@@ -27,8 +28,13 @@ public interface PropostaMapper {
     @Mapping(target = "telefone", source = "usuario.telefone")
     @Mapping(target = "cpf", source = "usuario.cpf")
     @Mapping(target = "renda", source = "usuario.renda")
+    @Mapping(target = "valorSolicitadoFmt", expression = "java(setValorSolicitadoFmt(proposta))")
     PropostaResponseDTO convertEntityToDto(Proposta proposta);
 
     List<PropostaResponseDTO> convertListEntityToListDto(Iterable<Proposta> propostas);
+
+    default String setValorSolicitadoFmt(Proposta proposta) {
+        return NumberFormat.getCurrencyInstance().format(proposta.getValorSolicitado());
+    }
 
 }
