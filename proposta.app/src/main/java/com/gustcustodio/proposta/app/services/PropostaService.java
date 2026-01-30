@@ -16,13 +16,18 @@ import java.util.List;
 public class PropostaService {
 
     private final PropostaMapper propostaMapper;
+
+    private final NotificacaoRabbitService notificacaoRabbitService;
+
     private final PropostaRepository propostaRepository;
 
     @Transactional
     public PropostaResponseDTO criar(PropostaRequestDTO requestDTO) {
         Proposta entity = propostaMapper.convertDtoToEntity(requestDTO);
         propostaRepository.save(entity);
-        return propostaMapper.convertEntityToDto(entity);
+        PropostaResponseDTO response = propostaMapper.convertEntityToDto(entity);
+        notificacaoRabbitService.notificar(response, "proposta-pendente.ex");
+        return response;
     }
 
     @Transactional
