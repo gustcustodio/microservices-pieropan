@@ -6,6 +6,7 @@ import com.gustcustodio.proposta.app.entities.Proposta;
 import com.gustcustodio.proposta.app.mapper.PropostaMapper;
 import com.gustcustodio.proposta.app.repositories.PropostaRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,12 +22,15 @@ public class PropostaService {
 
     private final PropostaRepository propostaRepository;
 
+    @Value("${rabbitmq.proposta-pendente.exchange}")
+    private String exchange;
+
     @Transactional
     public PropostaResponseDTO criar(PropostaRequestDTO requestDTO) {
         Proposta entity = propostaMapper.convertDtoToEntity(requestDTO);
         propostaRepository.save(entity);
         PropostaResponseDTO response = propostaMapper.convertEntityToDto(entity);
-        notificacaoRabbitService.notificar(response, "proposta-pendente.ex");
+        notificacaoRabbitService.notificar(response, exchange);
         return response;
     }
 
