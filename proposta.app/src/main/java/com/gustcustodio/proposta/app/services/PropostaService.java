@@ -25,13 +25,21 @@ public class PropostaService {
     @Value("${rabbitmq.proposta-pendente.exchange}")
     private String exchange;
 
+    private void notificarRabbitMQ(Proposta proposta) {
+        try {
+            notificacaoRabbitService.notificar(proposta, exchange);
+        } catch (RuntimeException e) {
+            proposta.setIntegrada(false);
+            propostaRepository.save(proposta);
+        }
+    }
+
     @Transactional
     public PropostaResponseDTO criar(PropostaRequestDTO requestDTO) {
-        Proposta entity = propostaMapper.convertDtoToEntity(requestDTO);
-        propostaRepository.save(entity);
-        PropostaResponseDTO response = propostaMapper.convertEntityToDto(entity);
-        notificacaoRabbitService.notificar(response, exchange);
-        return response;
+        Proposta proposta = propostaMapper.convertDtoToEntity(requestDTO);
+        propostaRepository.save(proposta);
+        notificarRabbitMQ(proposta);
+        return propostaMapper.convertEntityToDto(proposta);
     }
 
     @Transactional
