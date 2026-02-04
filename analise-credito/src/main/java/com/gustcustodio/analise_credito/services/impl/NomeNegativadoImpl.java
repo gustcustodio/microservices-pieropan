@@ -2,9 +2,13 @@ package com.gustcustodio.analise_credito.services.impl;
 
 import com.gustcustodio.analise_credito.domain.Proposta;
 import com.gustcustodio.analise_credito.services.strategy.CalculoPonto;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
 
 import java.util.Random;
 
+@Order(1)
+@Component
 public class NomeNegativadoImpl implements CalculoPonto {
 
     @Override
