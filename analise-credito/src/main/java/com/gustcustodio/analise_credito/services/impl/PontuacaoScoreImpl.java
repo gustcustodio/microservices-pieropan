@@ -1,6 +1,8 @@
 package com.gustcustodio.analise_credito.services.impl;
 
+import com.gustcustodio.analise_credito.constants.MensagemConstante;
 import com.gustcustodio.analise_credito.domain.Proposta;
+import com.gustcustodio.analise_credito.exceptions.StrategyException;
 import com.gustcustodio.analise_credito.services.strategy.CalculoPonto;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -16,7 +18,7 @@ public class PontuacaoScoreImpl implements CalculoPonto {
         int score = score();
 
         if (score <= 200) {
-            throw new RuntimeException("Score abaixo");
+            throw new StrategyException(String.format(MensagemConstante.PONTUACAO_SERASA_BAIXA, proposta.getUsuario().getNome()));
         } else if (score <= 400) {
             return 150;
         } else if (score <= 600) {
