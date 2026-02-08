@@ -5,12 +5,15 @@ import com.gustcustodio.proposta.app.dtos.PropostaResponseDTO;
 import com.gustcustodio.proposta.app.entities.Proposta;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.factory.Mappers;
 
 import java.text.NumberFormat;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface PropostaMapper {
+
+    PropostaMapper INSTANCE = Mappers.getMapper(PropostaMapper.class);
 
     @Mapping(target = "usuario.nome", source = "nome")
     @Mapping(target = "usuario.sobrenome", source = "sobrenome")
